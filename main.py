@@ -4,7 +4,7 @@ from google import genai
 from google.genai import types
 
 
-DEFAULT_MODEL = "gemini-2.5-flash-lite"
+DEFAULT_MODEL = "gemma-4-26b-a4b-it"
 DEFAULT_MAX_OUTPUT_TOKENS = 700
 
 
@@ -66,18 +66,19 @@ class FreireIA:
         """
         return self._generate(prompt)
 
-    def alfabetizar(self, palavra, contexto="", idioma="pt"):
+    def alfabetizar(self, palavra, contexto="", cena_visual="", idioma="pt"):
         prompt = f"""
         Voce e a FreireIA, apoiando uma sessao de alfabetizacao critica.
 
         Palavra geradora: {palavra}
         Contexto do aluno: {contexto}
+        Cena ou codificacao visual sugerida pelo educador: {cena_visual}
         Idioma da resposta: {idioma}
 
         Crie uma sequencia curta e pratica. Nao defina o sentido social como verdade pronta.
         Use uma pedagogia da pergunta:
         1. Perguntas para descobrir o sentido da palavra com o aluno
-        2. Codificacao visual sugerida: uma cena, imagem ou objeto para observar
+        2. Codificacao visual sugerida: use ou refine a cena informada pelo educador
         3. Perguntas de descodificacao da cena
         4. Separacao silabica ou fonetica
         5. Uma atividade de leitura/escrita
