@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import streamlit as st
@@ -110,13 +111,16 @@ def build_report(
     palavra_geradora,
     mediacao,
     exercicio,
+    fala_significativa,
+    situacao_limite,
+    pergunta_aberta,
     conhece,
     escreve,
     fala,
     frase,
     frase_aluno,
 ):
-    return f"""# Relatorio da sessao FreireIA
+    return f"""# Memoria do Circulo de Cultura
 
 ## Palavra geradora
 
@@ -140,7 +144,21 @@ def build_report(
 
 {exercicio or "Nao gerada"}
 
-## Evidencias observadas
+## Caminhada observada
+
+**Fala significativa do aluno**
+
+{fala_significativa or "Nao registrada"}
+
+**Situacao-limite percebida ou hipotese para investigar**
+
+{situacao_limite or "Nao registrada"}
+
+**Pergunta que ficou aberta**
+
+{pergunta_aberta or "Nao registrada"}
+
+## Evidencias de aprendizagem
 
 - Reconheceu a palavra escolhida: {yes_no(conhece)}
 - Tentou escrever a palavra: {yes_no(escreve)}
@@ -153,8 +171,13 @@ def build_report(
 
 ## Proximo encontro
 
-Retomar a palavra geradora, revisar a frase produzida e propor uma nova atividade ligada ao mesmo contexto vivido pelo aluno.
+Retomar a palavra geradora, reler a fala significativa do aluno e aprofundar a pergunta que ficou aberta.
 """
+
+
+def report_file_name():
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    return f"memoria_circulo_cultura_{timestamp}.md"
 
 
 st.set_page_config(
@@ -324,15 +347,33 @@ if passo_atual == "2. Criar atividade":
 
 if passo_atual == "3. Registrar resultado":
     st.subheader("3. Registrar resultado")
-    st.write("Ao final da conversa, marque o que o aluno conseguiu fazer.")
+    st.write("Ao final da conversa, registre a caminhada do aluno e o que ficou aberto para o proximo encontro.")
 
     conhece = st.checkbox("Reconheceu a palavra escolhida", key="conhece_palavra")
     escreve = st.checkbox("Tentou escrever a palavra", key="escreveu_palavra")
-    fala = st.checkbox("Falou sobre o sentido da palavra na propria vida", key="explicou_sentido")
+    fala = st.checkbox("Relacionou a palavra com a propria vida", key="explicou_sentido")
     frase = st.checkbox("Criou uma frase com ajuda do educador", key="criou_frase")
 
     progresso = sum([conhece, escreve, fala, frase]) / 4
     st.progress(progresso)
+
+    fala_significativa = st.text_area(
+        "Fala significativa do aluno",
+        key="fala_significativa",
+        placeholder="Ex.: Eu trabalho muito, mas queria ter mais tempo para estudar.",
+    )
+
+    situacao_limite = st.text_area(
+        "Situacao-limite percebida ou hipotese para investigar",
+        key="situacao_limite",
+        placeholder="Ex.: cansaco no trajeto, pouco tempo para estudar, vergonha de ler mensagens.",
+    )
+
+    pergunta_aberta = st.text_area(
+        "Pergunta que ficou aberta para o proximo encontro",
+        key="pergunta_aberta",
+        placeholder="Ex.: O tempo de descanso do aluno e respeitado?",
+    )
 
     frase_aluno = st.text_area(
         "Frase ou registro produzido pelo aluno",
@@ -345,16 +386,19 @@ if passo_atual == "3. Registrar resultado":
     else:
         st.info("Tudo bem se nem todos os itens forem marcados. Use o registro para planejar o proximo encontro.")
 
-    st.markdown("### Relatorio da sessao")
-    st.write("Gere um resumo para guardar, compartilhar com a equipe ou planejar o proximo encontro.")
+    st.markdown("### Memoria do Circulo de Cultura")
+    st.write("Gere uma memoria da caminhada para guardar, compartilhar com a equipe ou planejar o proximo encontro.")
 
-    if st.button("Gerar relatorio"):
+    if st.button("Gerar memoria"):
         st.session_state["relatorio"] = build_report(
             contexto_educador=st.session_state.get("contexto_educador", ""),
             fala_aluno=st.session_state.get("fala_aluno", ""),
             palavra_geradora=st.session_state.get("palavra_geradora", ""),
             mediacao=st.session_state.get("mediacao", ""),
             exercicio=st.session_state.get("exercicio", ""),
+            fala_significativa=fala_significativa,
+            situacao_limite=situacao_limite,
+            pergunta_aberta=pergunta_aberta,
             conhece=conhece,
             escreve=escreve,
             fala=fala,
@@ -365,8 +409,8 @@ if passo_atual == "3. Registrar resultado":
     if "relatorio" in st.session_state:
         st.markdown(st.session_state["relatorio"])
         st.download_button(
-            "Baixar relatorio em Markdown",
+            "Baixar memoria em Markdown",
             data=st.session_state["relatorio"],
-            file_name="relatorio_freireia.md",
+            file_name=report_file_name(),
             mime="text/markdown",
         )

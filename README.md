@@ -2,7 +2,7 @@
 
 FreireIA is a literacy companion built for the Gemma 4 Good Hackathon. The project explores how Paulo Freire's pedagogy can be combined with small, accessible AI models to support critical literacy, multilingual education, and community-based learning.
 
-The demo focuses on a mediated learning flow involving three participants: the educator, the learner, and FreireIA. The solution does not replace the educator. It acts as an interlocutor and facilitator that helps listen to the learner, organize multimodal signals, suggest generative words, and transform the conversation into a critical literacy activity.
+The demo focuses on a mediated learning flow involving three participants: the educator, the learner, and FreireIA. The solution does not replace the educator. It acts as an interlocutor and facilitator that helps listen to the learner, organize multimodal signals, suggest generative words, surface investigative questions and possible limit-situations, and transform the conversation into a critical literacy activity.
 
 ## Demo Goal
 
@@ -12,7 +12,7 @@ The hackathon version is designed to prove the concept quickly and clearly:
 - Provide a simple Streamlit interface for educators and mentors.
 - Show a mediated session between educator, learner, and FreireIA.
 - Support Portuguese, Spanish, and English learning activities.
-- Keep the pedagogical flow explicit: investigation -> generative word -> culture circle -> literacy exercise -> learning evidence.
+- Keep the pedagogical flow explicit: listening -> generative word -> investigative questions -> culture circle -> literacy activity -> Memory of the Culture Circle.
 - Demonstrate social impact for adult literacy, community education, migrants, and low-resource learning contexts.
 
 During early development, the app can use Gemini as a fallback model while the Gemma 4 runtime is prepared. For the hackathon submission, the core generation path should run on Gemma 4.
@@ -76,10 +76,11 @@ Planned characteristics:
 - Gemini fallback only for development or emergency demo recovery.
 - Mediated interaction with educator notes, learner speech/text, observed signals, and visual/touch cards.
 - AI-assisted suggestion of generative words.
-- Generated culture-circle discussion.
-- Generated literacy activity by language.
-- Checklist for the definition of done: identify the word, write the word, explain its meaning, and apply it in a critical sentence.
-- Visible model/runtime information in the app.
+- AI-assisted investigative questions and possible limit-situations.
+- Culture-circle activity with visual codification suggestions.
+- Literacy activity by language.
+- Narrative learning record with learner voice, open question, and observed evidence.
+- Downloadable `Memoria do Circulo de Cultura` in Markdown.
 
 ### Version 1 - Pilot With Educators
 
@@ -131,10 +132,12 @@ This keeps the pedagogy independent from any single API. For the hackathon, Gemm
 1. Investigation: collect the learner's vocabulary universe.
 2. Mediation: combine educator notes, learner expression, observed signals, and touch/image choices.
 3. Generative word: select a word connected to the learner's lived reality.
-4. Culture circle: discuss the social meaning of the word before technical literacy work.
-5. Literacy exercise: decompose the word into syllables or phonetic units.
-6. Critical sentence: the learner applies the word in a meaningful phrase.
-7. Evidence: the educator checks whether the learning objective was achieved.
+4. Investigative questions: turn the learner's context into questions instead of fixed definitions.
+5. Limit-situations: identify possible constraints or contradictions to investigate further.
+6. Visual codification: suggest an image, scene, or object to support critical dialogue.
+7. Literacy exercise: decompose the word into syllables or phonetic units.
+8. Critical sentence: the learner applies the word in a meaningful phrase.
+9. Memory of the Culture Circle: the educator records learner voice, evidence, open questions, and next steps.
 
 ## Cost Direction
 
