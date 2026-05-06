@@ -42,7 +42,7 @@ Aluno adulto, trabalha em mercado, pega onibus cedo, chega cansado e quer aprend
 Peca ao educador:
 
 1. Abrir a demo.
-2. Olhar as tres abas.
+2. Olhar os tres botoes de etapa: `1. Escutar`, `2. Criar atividade`, `3. Registrar resultado`.
 3. Explicar com as proprias palavras o que acha que deve fazer primeiro.
 
 Resultado esperado:
@@ -114,7 +114,8 @@ Resultado esperado:
 - A FreireIA resume a escuta.
 - A FreireIA sugere palavras como `trabalho`, `onibus`, `familia` ou `casa`.
 - Cada palavra vem com uma justificativa simples.
-- A FreireIA sugere uma proxima pergunta para o educador.
+- A FreireIA sugere duvidas investigativas para o educador aprofundar.
+- A FreireIA aponta possiveis situacoes-limite como hipoteses, sem afirmar como certeza.
 - A tela mostra uma area clara para escolher a palavra geradora.
 - O botao `Usar esta palavra e criar atividade` leva o educador para a proxima etapa.
 
@@ -143,7 +144,10 @@ trabalho
 Resultado esperado:
 
 - A atividade comeca pelo sentido social da palavra.
-- A atividade traz perguntas para conversa.
+- A atividade evita definir o sentido social como verdade pronta.
+- A atividade traz perguntas para descobrir o sentido da palavra com o aluno.
+- A atividade sugere uma codificacao visual, como imagem, cena ou objeto.
+- A atividade traz perguntas de descodificacao da cena.
 - A atividade inclui leitura, escrita ou separacao silabica/fonetica.
 - A linguagem e simples o bastante para uso com o aluno.
 
@@ -170,16 +174,17 @@ Resultado esperado:
 - O progresso muda conforme os itens sao marcados.
 - O registro final ajuda a planejar o proximo encontro.
 - O educador entende que nao precisa marcar tudo na primeira sessao.
-- A tela permite gerar um relatorio da sessao.
-- O relatorio consolida escuta, palavra geradora, atividade e evidencias.
-- O relatorio pode ser baixado em Markdown.
+- A tela permite registrar fala significativa, situacao-limite e pergunta aberta.
+- A tela permite gerar a `Memoria do Circulo de Cultura`.
+- A memoria consolida escuta, palavra geradora, atividade, caminhada e evidencias.
+- A memoria pode ser baixada em Markdown.
 
 Perguntas para o educador:
 
 - Esses criterios fazem sentido para avaliar a sessao?
 - Falta algum criterio importante?
 - Voce usaria esse registro depois da aula?
-- O relatorio seria util para acompanhar o aluno ou conversar com outro educador?
+- A memoria seria util para acompanhar o aluno ou conversar com outro educador?
 
 ## Passo 6 - Feedback final
 

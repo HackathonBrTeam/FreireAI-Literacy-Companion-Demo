@@ -27,20 +27,6 @@ class FreireIA:
             ),
         )
 
-    def iniciar_investigacao(self, idioma="pt"):
-        prompt = f"""
-        Voce e a FreireIA, uma co-mediadora entre educador e aluno.
-        Crie um roteiro curto no idioma '{idioma}' para abrir uma sessao de escuta.
-        Nao use nomes ficticios, colchetes, placeholders ou campos como [Nome].
-        Escreva como orientacao para o educador, nao como fala direta da IA.
-
-        Responda em secoes curtas:
-        1. Convite inicial: uma frase simples que o educador pode adaptar
-        2. Perguntas para escutar: cinco perguntas curtas
-        3. O que observar: palavras que aparecem com emocao, repeticao ou gesto
-        """
-        return self._generate(prompt)
-
     def mediar_dialogo(
         self,
         contexto_educador,
@@ -72,10 +58,11 @@ class FreireIA:
         Gere uma resposta curta e estruturada:
         1. Sintese da escuta
         2. Possiveis palavras geradoras, com 1 linha de justificativa cada
-        3. Proxima pergunta que o educador pode fazer
-        4. Cuidados de acolhimento
+        3. Possiveis situacoes-limite percebidas, sem afirmar como certeza
+        4. Duvidas investigativas para aprofundar o dialogo
+        5. Cuidados de acolhimento
 
-        Evite respostas longas. Nao use placeholders.
+        Prefira perguntas a definicoes prontas. Evite respostas longas. Nao use placeholders.
         """
         return self._generate(prompt)
 
@@ -87,12 +74,15 @@ class FreireIA:
         Contexto do aluno: {contexto}
         Idioma da resposta: {idioma}
 
-        Crie uma sequencia curta e pratica:
-        1. Sentido social da palavra
-        2. Duas perguntas para circulo de cultura
-        3. Separacao silabica ou fonetica
-        4. Uma atividade de leitura/escrita
-        5. Uma frase critica modelo
+        Crie uma sequencia curta e pratica. Nao defina o sentido social como verdade pronta.
+        Use uma pedagogia da pergunta:
+        1. Perguntas para descobrir o sentido da palavra com o aluno
+        2. Codificacao visual sugerida: uma cena, imagem ou objeto para observar
+        3. Perguntas de descodificacao da cena
+        4. Separacao silabica ou fonetica
+        5. Uma atividade de leitura/escrita
+        6. Uma frase critica incompleta para o aluno completar
+        7. Possivel situacao-limite a investigar no proximo encontro
 
         Mantenha linguagem simples e adequada para o educador aplicar com o aluno.
         """
