@@ -15,8 +15,23 @@ http://localhost:8501
 Use uma configuracao economica no `.env`:
 
 ```env
+GEMINI_MODEL=gemma-4-26b-a4b-it
 GEMINI_MAX_OUTPUT_TOKENS=250
+GEMINI_BUDGET_BRL=10.00
+GEMINI_INPUT_BRL_PER_1M_TOKENS=0.40
+GEMINI_OUTPUT_BRL_PER_1M_TOKENS=1.75
 ```
+
+Para a demo do hackathon, confirme que o modelo configurado na barra lateral aparece como Gemma 4.
+
+Confira também o painel `Consumo estimado` na barra lateral. Ele deve mostrar tokens de entrada, tokens de saída, tokens totais, valor estimado usado e saldo estimado. Esse saldo é uma estimativa local da sessão; o saldo real continua sendo o do Google Billing.
+
+Se o teste acontecer por URL privada, confirme antes:
+
+- A pessoa recebeu o convite por e-mail.
+- A pessoa conseguiu abrir a URL da demo.
+- A tela de consentimento apareceu antes do uso.
+- O link de feedback abriu o formulário externo configurado.
 
 Explique ao educador:
 
@@ -49,12 +64,15 @@ Resultado esperado:
 
 - O educador entende que deve comecar por `1. Escutar`.
 - O educador percebe que a ferramenta apoia a conversa, nao substitui sua atuacao.
+- O educador percebe a barra de progresso da sessao.
+- O educador entende o aviso inicial de consentimento.
 
 Perguntas para o educador:
 
 - O primeiro passo ficou claro?
 - Alguma palavra da tela parece tecnica demais?
 - Voce saberia usar essa tela durante uma conversa real?
+- A barra de progresso ajuda a entender em que momento da sessao voce esta?
 
 ## Passo 2 - Preparar perguntas de escuta
 
@@ -68,6 +86,7 @@ Resultado esperado:
 
 - As perguntas sao simples.
 - As perguntas ajudam a iniciar uma conversa com o aluno.
+- As perguntas aparecem como itens marcaveis, nao como um bloco longo de texto.
 - O educador nao precisa clicar em nada para entender como comecar.
 
 Perguntas para o educador:
@@ -113,11 +132,13 @@ Resultado esperado:
 
 - A FreireIA resume a escuta.
 - A FreireIA sugere palavras como `trabalho`, `onibus`, `familia` ou `casa`.
+- O painel de consumo estimado aumenta depois da chamada ao modelo.
 - Cada palavra vem com uma justificativa simples.
 - A FreireIA sugere duvidas investigativas para o educador aprofundar.
 - A FreireIA aponta possiveis situacoes-limite como hipoteses, sem afirmar como certeza.
 - A tela mostra uma area clara para escolher a palavra geradora.
 - O botao `Usar esta palavra e criar atividade` leva o educador para a proxima etapa.
+- As observacoes e temas escolhidos aparecem como cards/checklists, com menos atrito que campos longos.
 
 Perguntas para o educador:
 
@@ -144,9 +165,11 @@ trabalho
 Resultado esperado:
 
 - A atividade comeca pelo sentido social da palavra.
+- O painel de consumo estimado aumenta novamente depois da chamada ao modelo.
 - A atividade evita definir o sentido social como verdade pronta.
 - A atividade traz perguntas para descobrir o sentido da palavra com o aluno.
 - A atividade sugere uma codificacao visual, como imagem, cena ou objeto.
+- A tela mostra um campo `Cena para observar com o aluno` antes de gerar a atividade.
 - A atividade traz perguntas de descodificacao da cena.
 - A atividade inclui leitura, escrita ou separacao silabica/fonetica.
 - A linguagem e simples o bastante para uso com o aluno.
@@ -177,6 +200,8 @@ Resultado esperado:
 - A tela permite registrar fala significativa, situacao-limite e pergunta aberta.
 - A tela permite gerar a `Memoria do Circulo de Cultura`.
 - A memoria consolida escuta, palavra geradora, atividade, caminhada e evidencias.
+- A memoria inclui a codificacao visual usada na sessao.
+- A memoria inclui o resumo de uso estimado da IA.
 - A memoria pode ser baixada em Markdown.
 
 Perguntas para o educador:
@@ -195,6 +220,8 @@ Pergunte ao educador:
 3. A ferramenta respeita o papel do educador?
 4. A ferramenta ajuda a escutar melhor o aluno?
 5. Que mudanca faria antes de testar com alunos reais?
+
+Depois, peca para registrar as impressoes na secao `Impressoes sobre a demo` ou no formulario externo configurado para a validacao por convite.
 
 ## Criterios de sucesso da demo
 

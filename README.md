@@ -15,7 +15,7 @@ The hackathon version is designed to prove the concept quickly and clearly:
 - Keep the pedagogical flow explicit: listening -> generative word -> investigative questions -> culture circle -> literacy activity -> Memory of the Culture Circle.
 - Demonstrate social impact for adult literacy, community education, migrants, and low-resource learning contexts.
 
-During early development, the app can use Gemini as a fallback model while the Gemma 4 runtime is prepared. For the hackathon submission, the core generation path should run on Gemma 4.
+The demo is configured to use Gemma 4 through Google AI Studio. Gemini can remain a development fallback, but the hackathon path should keep Gemma 4 as the core generation model.
 
 ## Current Architecture
 
@@ -45,11 +45,18 @@ Create a local `.env` file from `.env.example`:
 
 ```env
 GEMINI_API_KEY=your_google_ai_studio_key_here
-GEMINI_MODEL=gemini-2.5-flash-lite
+GEMINI_MODEL=gemma-4-26b-a4b-it
 GEMINI_MAX_OUTPUT_TOKENS=700
+GEMINI_BUDGET_BRL=10.00
+GEMINI_INPUT_BRL_PER_1M_TOKENS=0.40
+GEMINI_OUTPUT_BRL_PER_1M_TOKENS=1.75
 ```
 
 The `.env` file is intentionally ignored by Git. Do not commit API keys.
+
+The budget and token-rate fields are used only by the Streamlit demo to estimate local session consumption. The real balance must still be checked in Google Billing.
+
+For Streamlit Community Cloud, configure these same values in the app secrets instead of using `.env`. Use `.streamlit/secrets.toml.example` as the reference format.
 
 Run the demo:
 
@@ -63,6 +70,28 @@ Open:
 http://localhost:8501
 ```
 
+## Invite-Based Validation
+
+To publish the demo for invited educators or interested reviewers:
+
+1. Push the repository to GitHub without `.env`.
+2. Create the app in Streamlit Community Cloud.
+3. Use `frontend/streamlit_app.py` as the main file path.
+4. Keep the app private while testing with invited users.
+5. Configure the app secrets with the values from `.streamlit/secrets.toml.example`.
+6. Add a `FEEDBACK_FORM_URL` pointing to a Google Forms, Microsoft Forms, Typeform, or similar survey.
+7. Invite users by email through the Streamlit sharing settings.
+
+The app includes a consent screen for invited validation. It reminds testers to use fictional examples or minimal data and avoid sensitive learner information. Feedback can be sent through the configured external form, or generated as a Markdown file during live testing.
+
+Suggested external feedback questions:
+
+- What was your role during the test?
+- At what moment did FreireIA help the most?
+- At what moment did the interface feel confusing?
+- Would this support a real literacy session?
+- What should change before testing with real learners?
+
 ## Version Plan
 
 ### Version 0 - Hackathon Demo
@@ -73,8 +102,11 @@ Planned characteristics:
 
 - Streamlit interface.
 - Gemma 4 as the primary model path.
+- `gemma-4-26b-a4b-it` as the default demo model through Google AI Studio.
 - Gemini fallback only for development or emergency demo recovery.
 - Mediated interaction with educator notes, learner speech/text, observed signals, and visual/touch cards.
+- Checklist-style listening prompts and observation cards to reduce reading friction during the session.
+- Visual progress indicator across the three educator-facing steps.
 - AI-assisted suggestion of generative words.
 - AI-assisted investigative questions and possible limit-situations.
 - Culture-circle activity with visual codification suggestions.
@@ -120,6 +152,7 @@ Frontend
 FreireIA pedagogical core
    |
 Model provider
+   |-- Gemma 4 through Google AI Studio
    |-- Gemma 4 local or cloud runtime
    |-- Vertex AI endpoint
    `-- Gemini fallback
@@ -144,6 +177,8 @@ This keeps the pedagogy independent from any single API. For the hackathon, Gemm
 For the demo, the recommended direction is a local or short-lived cloud GPU runtime for Gemma 4, activated only during testing and presentation. This keeps costs controlled while satisfying the hackathon premise.
 
 For Gemini fallback testing, keep a small monthly budget in Google Cloud, create alerts, and cap model output with `GEMINI_MAX_OUTPUT_TOKENS`.
+
+The Streamlit interface shows an estimated usage panel with input tokens, output tokens, total tokens, estimated amount used, and estimated remaining balance. This panel is based on token metadata returned by the API and the local `.env` budget/rate values; it is not a live billing statement.
 
 For a future product, the best path is to support multiple deployment modes:
 
