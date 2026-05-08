@@ -88,7 +88,3 @@ class FreireIA:
         Mantenha linguagem simples e adequada para o educador aplicar com o aluno.
         """
         return self._generate(prompt)
-
-
-# Exemplo de uso:
-# app = FreireIA(api_key="USER_PROVIDED_KEY")

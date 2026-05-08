@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FreireIA - Literacy Companion</title>
+    <meta
+      name="description"
+      content="FreireIA is a Gemma 4 powered literacy companion that helps educators turn real conversations into critical literacy activities."
+    >
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #18201b;
+        --muted: #5a625d;
+        --paper: #fbfaf6;
+        --surface: #ffffff;
+        --line: #d9ded7;
+        --leaf: #2f6f4e;
+        --clay: #a45c3a;
+        --blue: #326c8f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.55;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .hero {
+        min-height: 88vh;
+        display: grid;
+        align-items: end;
+        position: relative;
+        overflow: hidden;
+        background:
+          linear-gradient(90deg, rgba(24, 32, 27, 0.90), rgba(24, 32, 27, 0.60) 48%, rgba(24, 32, 27, 0.22)),
+          url("media/screen-shot-1.png") center / cover;
+        color: #fffdf7;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        height: 10rem;
+        background: linear-gradient(transparent, var(--paper));
+        pointer-events: none;
+      }
+
+      .nav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem clamp(1rem, 4vw, 3rem);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .brand {
+        font-weight: 800;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        font-size: 0.95rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: rgba(255, 253, 247, 0.88);
+      }
+
+      .language-switcher {
+        display: inline-flex;
+        gap: 0.25rem;
+        padding-left: 0.5rem;
+        border-left: 1px solid rgba(255, 255, 255, 0.25);
+      }
+
+      .language-switcher button {
+        min-width: 2.4rem;
+        min-height: 2rem;
+        padding: 0.25rem 0.45rem;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 6px;
+        background: transparent;
+        color: rgba(255, 253, 247, 0.88);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .language-switcher button[aria-current="true"] {
+        background: #fffdf7;
+        color: var(--ink);
+        border-color: #fffdf7;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        width: min(1080px, 100%);
+        padding: 7rem clamp(1rem, 4vw, 3rem) 8rem;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        margin: 0 0 1rem;
+        color: #f5d58f;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin-bottom: 1rem;
+        font-size: clamp(3rem, 8vw, 5.8rem);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .hero-text {
+        max-width: 700px;
+        margin-bottom: 1.5rem;
+        color: rgba(255, 253, 247, 0.90);
+        font-size: 1.18rem;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.75rem;
+        padding: 0.7rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .button.primary {
+        background: #fffdf7;
+        color: var(--ink);
+        border-color: #fffdf7;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+      }
+
+      section {
+        padding: 4.5rem clamp(1rem, 4vw, 3rem);
+      }
+
+      .section-inner {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(1.5rem, 4vw, 4rem);
+        align-items: start;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        font-size: clamp(2rem, 4vw, 3.3rem);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        color: var(--muted);
+        font-size: 1.08rem;
+      }
+
+      .steps,
+      .versions,
+      .impact-list {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .step,
+      .version,
+      .impact-item {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 1.1rem;
+      }
+
+      .step strong,
+      .version strong,
+      .impact-item strong {
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+
+      .step:nth-child(1) {
+        border-top: 4px solid var(--leaf);
+      }
+
+      .step:nth-child(2) {
+        border-top: 4px solid var(--clay);
+      }
+
+      .step:nth-child(3) {
+        border-top: 4px solid var(--blue);
+      }
+
+      .version small {
+        display: block;
+        color: var(--muted);
+        font-weight: 700;
+        margin-bottom: 0.45rem;
+      }
+
+      .version p {
+        margin: 0.75rem 0 0;
+      }
+
+      .gallery {
+        background: #eef2ed;
+      }
+
+      .screens {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      figure {
+        margin: 0;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      figure img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+      }
+
+      figcaption {
+        padding: 0.75rem 0.9rem;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .tech {
+        background: var(--ink);
+        color: #fffdf7;
+      }
+
+      .tech .lead {
+        color: rgba(255, 253, 247, 0.72);
+      }
+
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .tech-item {
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 8px;
+        padding: 1rem;
+      }
+
+      footer {
+        padding: 2rem clamp(1rem, 4vw, 3rem);
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+      }
+
+      footer .section-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 820px) {
+        .hero {
+          min-height: 92vh;
+          background:
+            linear-gradient(180deg, rgba(24, 32, 27, 0.92), rgba(24, 32, 27, 0.74) 54%, rgba(24, 32, 27, 0.38)),
+            url("media/screen-shot-1.png") center top / cover;
+        }
+
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .language-switcher {
+          padding-left: 0;
+          border-left: 0;
+        }
+
+        .hero-content {
+          padding-top: 9rem;
+        }
+
+        .split,
+        .tech-grid,
+        .screens {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav" aria-label="Main navigation" data-i18n-aria-label="nav_label">
+        <div class="brand">FreireIA</div>
+        <div class="nav-links">
+          <a href="#workflow" data-i18n="nav_workflow">Workflow</a>
+          <a href="#versions" data-i18n="nav_versions">Versions</a>
+          <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
+          <a href="README.md" data-i18n="nav_repo">Repository</a>
+          <div class="language-switcher" aria-label="Language" data-i18n-aria-label="language_label">
+            <button type="button" data-lang="pt" aria-label="Português">PT</button>
+            <button type="button" data-lang="en" aria-label="English">EN</button>
+            <button type="button" data-lang="es" aria-label="Español">ES</button>
+          </div>
+        </div>
+      </nav>
+      <div class="hero-content">
+        <p class="eyebrow">Gemma 4 Good Hackathon</p>
+        <h1>FreireIA</h1>
+        <p class="hero-text" data-i18n="hero_text">
+          A literacy companion that helps educators turn real conversations into critical literacy activities while keeping the educator in control.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="https://freireai-literacy-companion-demo.streamlit.app/" data-i18n="cta_app">Open demo app</a>
+          <a class="button" href="https://github.com/HackathonBrTeam/FreireAI-Literacy-Companion-Demo" data-i18n="cta_github">GitHub demo</a>
+          <a class="button" href="docs/kaggle_submission_checklist.md" data-i18n="cta_checklist">Submission checklist</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="workflow">
+        <div class="section-inner split">
+          <div>
+            <h2 data-i18n="workflow_title">From listening to action</h2>
+            <p class="lead" data-i18n="workflow_lead">
+              FreireIA supports one specific educator workflow: listen to the learner, choose a generative word, create an activity, and preserve the memory of the Culture Circle.
+            </p>
+          </div>
+          <ol class="steps">
+            <li class="step" data-i18n-html="step_1"></li>
+            <li class="step" data-i18n-html="step_2"></li>
+            <li class="step" data-i18n-html="step_3"></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="versions">
+        <div class="section-inner split">
+          <div>
+            <h2 data-i18n="versions_title">Version path</h2>
+            <p class="lead" data-i18n="versions_lead">
+              The roadmap keeps the demo focused for judges while showing how the project can mature into a pilot and then a deployable literacy platform.
+            </p>
+          </div>
+          <div class="versions">
+            <article class="version" data-i18n-html="version_0"></article>
+            <article class="version" data-i18n-html="version_1"></article>
+            <article class="version" data-i18n-html="version_2"></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech">
+        <div class="section-inner">
+          <h2 data-i18n="tech_title">Built for useful proof</h2>
+          <p class="lead" data-i18n="tech_lead">
+            The demo is designed to prove the educational workflow end to end, not to hide behind a generic chatbot surface.
+          </p>
+          <div class="tech-grid">
+            <div class="tech-item" data-i18n="tech_1">Gemma 4 through Google AI Studio</div>
+            <div class="tech-item" data-i18n="tech_2">Portuguese, Spanish, and English support</div>
+            <div class="tech-item" data-i18n="tech_3">Streamlit secrets and local environment config</div>
+            <div class="tech-item" data-i18n="tech_4">Consent gate and minimal-data validation</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="gallery">
+        <div class="section-inner">
+          <h2 data-i18n="gallery_title">Demo screens</h2>
+          <p class="lead" data-i18n="gallery_lead">Screenshots from the current FreireIA flow.</p>
+          <div class="screens">
+            <figure>
+              <img src="media/screen-shot-1.png" alt="FreireIA opening screen" data-i18n-alt="gallery_alt_1">
+              <figcaption data-i18n="gallery_caption_1">Opening screen and educator framing.</figcaption>
+            </figure>
+            <figure>
+              <img src="media/screen-shot-3.png" alt="Listening workflow in FreireIA" data-i18n-alt="gallery_alt_2">
+              <figcaption data-i18n="gallery_caption_2">Listening workflow with educator notes and themes.</figcaption>
+            </figure>
+            <figure>
+              <img src="media/screen-shot-7.png" alt="Generated activity in FreireIA" data-i18n-alt="gallery_alt_3">
+              <figcaption data-i18n="gallery_caption_3">Generated activity and next-step support.</figcaption>
+            </figure>
+            <figure>
+              <img src="media/screen-shot-10.png" alt="Session result screen in FreireIA" data-i18n-alt="gallery_alt_4">
+              <figcaption data-i18n="gallery_caption_4">Result recording for the literacy session.</figcaption>
+            </figure>
+            <figure>
+              <img src="media/screen-shot-12.png" alt="Memory of the Culture Circle" data-i18n-alt="gallery_alt_5">
+              <figcaption data-i18n="gallery_caption_5">Memory of the Culture Circle.</figcaption>
+            </figure>
+            <figure>
+              <img src="media/screen-shot-15.png" alt="Feedback screen in FreireIA" data-i18n-alt="gallery_alt_6">
+              <figcaption data-i18n="gallery_caption_6">Feedback capture for invited validation.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-inner split">
+          <div>
+            <h2 data-i18n="impact_title">Impact stance</h2>
+            <p class="lead" data-i18n="impact_lead">
+              FreireIA does not replace the educator. It helps organize listening, preserve learner context, and reduce the distance between conversation and meaningful literacy practice.
+            </p>
+          </div>
+          <ul class="impact-list">
+            <li class="impact-item" data-i18n-html="impact_1"></li>
+            <li class="impact-item" data-i18n-html="impact_2"></li>
+            <li class="impact-item" data-i18n-html="impact_3"></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="section-inner">
+        <span data-i18n="footer_project">FreireIA - Literacy Companion</span>
+        <span data-i18n="footer_license">MIT Licensed</span>
+      </div>
+    </footer>
+
+    <script>
+      const demoApp = "https://freireai-literacy-companion-demo.streamlit.app/";
+      const demoRepo = "https://github.com/HackathonBrTeam/FreireAI-Literacy-Companion-Demo";
+      const pilotRepo = "https://github.com/HackathonBrTeam/FreireAI-Literacy-Companion-Pilot";
+
+      const translations = {
+        en: {
+          title: "FreireIA - Literacy Companion",
+          description: "FreireIA is a Gemma 4 powered literacy companion that helps educators turn real conversations into critical literacy activities.",
+          nav_label: "Main navigation",
+          language_label: "Language",
+          nav_workflow: "Workflow",
+          nav_versions: "Versions",
+          nav_gallery: "Gallery",
+          nav_repo: "Repository",
+          hero_text: "A literacy companion that helps educators turn real conversations into critical literacy activities while keeping the educator in control.",
+          cta_app: "Open demo app",
+          cta_github: "GitHub demo",
+          cta_checklist: "Submission checklist",
+          workflow_title: "From listening to action",
+          workflow_lead: "FreireIA supports one specific educator workflow: listen to the learner, choose a generative word, create an activity, and preserve the memory of the Culture Circle.",
+          step_1: "<strong>1. Listen</strong> Record educator notes, learner speech, observed signals, and selected everyday themes.",
+          step_2: "<strong>2. Create Activity</strong> Use Gemma 4 to suggest generative words, investigative questions, visual codification, and a literacy activity.",
+          step_3: "<strong>3. Record Result</strong> Generate a downloadable memory with learner voice, evidence of learning, open questions, and estimated AI usage.",
+          versions_title: "Version path",
+          versions_lead: "The roadmap keeps the demo focused for judges while showing how the project can mature into a pilot and then a deployable literacy platform.",
+          version_0: `<small>Version 0</small><strong>Hackathon Demo</strong> Streamlit interface, Gemma 4 model calls, multilingual activities, educator-facing progress, and downloadable learning records.<p><a href="${demoApp}">Live app</a> &middot; <a href="${demoRepo}">Demo repository</a></p>`,
+          version_1: `<small>Version 1</small><strong>Pilot With Educators</strong> Session management, saved activities, reusable word history, teacher notes, offline direction, and privacy-first validation.<p>Currently being developed at <a href="${pilotRepo}">FreireAI-Literacy-Companion-Pilot</a>.</p>`,
+          version_2: "<small>Version 2</small><strong>Product</strong> Provider abstraction, institutional accounts, role-based access, learning analytics, voice support, and deployment options.",
+          tech_title: "Built for useful proof",
+          tech_lead: "The demo is designed to prove the educational workflow end to end, not to hide behind a generic chatbot surface.",
+          tech_1: "Gemma 4 through Google AI Studio",
+          tech_2: "Portuguese, Spanish, and English support",
+          tech_3: "Streamlit secrets and local environment config",
+          tech_4: "Consent gate and minimal-data validation",
+          gallery_title: "Demo screens",
+          gallery_lead: "Screenshots from the current FreireIA flow.",
+          gallery_alt_1: "FreireIA opening screen",
+          gallery_alt_2: "Listening workflow in FreireIA",
+          gallery_alt_3: "Generated activity in FreireIA",
+          gallery_alt_4: "Session result screen in FreireIA",
+          gallery_alt_5: "Memory of the Culture Circle",
+          gallery_alt_6: "Feedback screen in FreireIA",
+          gallery_caption_1: "Opening screen and educator framing.",
+          gallery_caption_2: "Listening workflow with educator notes and themes.",
+          gallery_caption_3: "Generated activity and next-step support.",
+          gallery_caption_4: "Result recording for the literacy session.",
+          gallery_caption_5: "Memory of the Culture Circle.",
+          gallery_caption_6: "Feedback capture for invited validation.",
+          impact_title: "Impact stance",
+          impact_lead: "FreireIA does not replace the educator. It helps organize listening, preserve learner context, and reduce the distance between conversation and meaningful literacy practice.",
+          impact_1: "<strong>Specific user</strong> Educators and mentors in adult literacy, EJA, migrant education, and community learning.",
+          impact_2: "<strong>Specific problem</strong> Turning learner speech and lived context into practical literacy activities is cognitively demanding and time-constrained.",
+          impact_3: "<strong>Specific safeguard</strong> The demo uses consent framing, minimal data, and educator review instead of automated pedagogical decisions.",
+          footer_project: "FreireIA - Literacy Companion",
+          footer_license: "MIT Licensed",
+        },
+        pt: {
+          title: "FreireIA - Companheira de Alfabetização",
+          description: "FreireIA é uma companheira de alfabetização com Gemma 4 que ajuda educadores a transformar conversas reais em atividades de alfabetização crítica.",
+          nav_label: "Navegação principal",
+          language_label: "Idioma",
+          nav_workflow: "Fluxo",
+          nav_versions: "Versões",
+          nav_gallery: "Galeria",
+          nav_repo: "Repositório",
+          hero_text: "Uma companheira de alfabetização que ajuda educadores a transformar conversas reais em atividades de alfabetização crítica, mantendo o educador no controle.",
+          cta_app: "Abrir demo",
+          cta_github: "GitHub da demo",
+          cta_checklist: "Checklist de submissão",
+          workflow_title: "Da escuta à ação",
+          workflow_lead: "A FreireIA apoia um fluxo específico do educador: escutar o aluno, escolher uma palavra geradora, criar uma atividade e preservar a memória do Círculo de Cultura.",
+          step_1: "<strong>1. Escutar</strong> Registre percepções do educador, fala do aluno, sinais observados e temas do cotidiano escolhidos.",
+          step_2: "<strong>2. Criar atividade</strong> Use Gemma 4 para sugerir palavras geradoras, perguntas investigativas, codificação visual e uma atividade de alfabetização.",
+          step_3: "<strong>3. Registrar resultado</strong> Gere uma memória baixável com voz do aluno, evidências de aprendizagem, perguntas abertas e uso estimado de IA.",
+          versions_title: "Caminho de versões",
+          versions_lead: "O roadmap mantém a demo focada para avaliação e mostra como o projeto pode amadurecer para um piloto e depois para uma plataforma de alfabetização.",
+          version_0: `<small>Versão 0</small><strong>Demo do Hackathon</strong> Interface Streamlit, chamadas ao Gemma 4, atividades multilíngues, progresso para o educador e registros de aprendizagem baixáveis.<p><a href="${demoApp}">App ao vivo</a> &middot; <a href="${demoRepo}">Repositório da demo</a></p>`,
+          version_1: `<small>Versão 1</small><strong>Piloto com educadores</strong> Gestão de sessões, atividades salvas, histórico de palavras geradoras, notas do professor, direção offline e validação com privacidade.<p>Em desenvolvimento no repositório <a href="${pilotRepo}">FreireAI-Literacy-Companion-Pilot</a>.</p>`,
+          version_2: "<small>Versão 2</small><strong>Produto</strong> Abstração de provedores, contas institucionais, acesso por papéis, analytics de aprendizagem, suporte de voz e opções de implantação.",
+          tech_title: "Construída para uma prova útil",
+          tech_lead: "A demo foi desenhada para provar o fluxo pedagógico de ponta a ponta, sem se esconder atrás de uma superfície genérica de chatbot.",
+          tech_1: "Gemma 4 pelo Google AI Studio",
+          tech_2: "Suporte a português, espanhol e inglês",
+          tech_3: "Secrets do Streamlit e configuração local",
+          tech_4: "Tela de consentimento e validação com dados mínimos",
+          gallery_title: "Telas da demo",
+          gallery_lead: "Capturas do fluxo atual da FreireIA.",
+          gallery_alt_1: "Tela inicial da FreireIA",
+          gallery_alt_2: "Fluxo de escuta na FreireIA",
+          gallery_alt_3: "Atividade gerada na FreireIA",
+          gallery_alt_4: "Tela de resultado da sessão na FreireIA",
+          gallery_alt_5: "Memória do Círculo de Cultura",
+          gallery_alt_6: "Tela de feedback da FreireIA",
+          gallery_caption_1: "Tela inicial e enquadramento do papel do educador.",
+          gallery_caption_2: "Fluxo de escuta com notas do educador e temas.",
+          gallery_caption_3: "Atividade gerada e apoio ao próximo passo.",
+          gallery_caption_4: "Registro de resultado da sessão de alfabetização.",
+          gallery_caption_5: "Memória do Círculo de Cultura.",
+          gallery_caption_6: "Coleta de feedback para validação por convite.",
+          impact_title: "Posição de impacto",
+          impact_lead: "A FreireIA não substitui o educador. Ela ajuda a organizar a escuta, preservar o contexto do aluno e reduzir a distância entre conversa e prática significativa de alfabetização.",
+          impact_1: "<strong>Usuário específico</strong> Educadores e mentores em alfabetização de adultos, EJA, educação de migrantes e aprendizagem comunitária.",
+          impact_2: "<strong>Problema específico</strong> Transformar fala e contexto de vida do aluno em atividades práticas de alfabetização exige esforço cognitivo e tempo.",
+          impact_3: "<strong>Salvaguarda específica</strong> A demo usa consentimento, dados mínimos e revisão do educador em vez de decisões pedagógicas automatizadas.",
+          footer_project: "FreireIA - Companheira de Alfabetização",
+          footer_license: "Licença MIT",
+        },
+        es: {
+          title: "FreireIA - Compañera de Alfabetización",
+          description: "FreireIA es una compañera de alfabetización con Gemma 4 que ayuda a educadores a convertir conversaciones reales en actividades de alfabetización crítica.",
+          nav_label: "Navegación principal",
+          language_label: "Idioma",
+          nav_workflow: "Flujo",
+          nav_versions: "Versiones",
+          nav_gallery: "Galería",
+          nav_repo: "Repositorio",
+          hero_text: "Una compañera de alfabetización que ayuda a educadores a convertir conversaciones reales en actividades de alfabetización crítica, manteniendo al educador en control.",
+          cta_app: "Abrir demo",
+          cta_github: "GitHub de la demo",
+          cta_checklist: "Checklist de entrega",
+          workflow_title: "De la escucha a la acción",
+          workflow_lead: "FreireIA apoya un flujo específico del educador: escuchar al estudiante, elegir una palabra generadora, crear una actividad y preservar la memoria del Círculo de Cultura.",
+          step_1: "<strong>1. Escuchar</strong> Registre notas del educador, habla del estudiante, señales observadas y temas cotidianos elegidos.",
+          step_2: "<strong>2. Crear actividad</strong> Use Gemma 4 para sugerir palabras generadoras, preguntas investigativas, codificación visual y una actividad de alfabetización.",
+          step_3: "<strong>3. Registrar resultado</strong> Genere una memoria descargable con voz del estudiante, evidencias de aprendizaje, preguntas abiertas y uso estimado de IA.",
+          versions_title: "Camino de versiones",
+          versions_lead: "El roadmap mantiene la demo enfocada para los jueces y muestra cómo el proyecto puede madurar hacia un piloto y luego una plataforma de alfabetización.",
+          version_0: `<small>Versión 0</small><strong>Demo del Hackathon</strong> Interfaz Streamlit, llamadas a Gemma 4, actividades multilingües, progreso para el educador y registros de aprendizaje descargables.<p><a href="${demoApp}">App en vivo</a> &middot; <a href="${demoRepo}">Repositorio de la demo</a></p>`,
+          version_1: `<small>Versión 1</small><strong>Piloto con educadores</strong> Gestión de sesiones, actividades guardadas, historial de palabras generadoras, notas docentes, dirección offline y validación con privacidad.<p>Actualmente en desarrollo en el repositorio <a href="${pilotRepo}">FreireAI-Literacy-Companion-Pilot</a>.</p>`,
+          version_2: "<small>Versión 2</small><strong>Producto</strong> Abstracción de proveedores, cuentas institucionales, acceso por roles, analíticas de aprendizaje, soporte de voz y opciones de despliegue.",
+          tech_title: "Construida para una prueba útil",
+          tech_lead: "La demo está diseñada para probar el flujo educativo de punta a punta, sin esconderse detrás de una superficie genérica de chatbot.",
+          tech_1: "Gemma 4 mediante Google AI Studio",
+          tech_2: "Soporte para portugués, español e inglés",
+          tech_3: "Secrets de Streamlit y configuración local",
+          tech_4: "Pantalla de consentimiento y validación con datos mínimos",
+          gallery_title: "Pantallas de la demo",
+          gallery_lead: "Capturas del flujo actual de FreireIA.",
+          gallery_alt_1: "Pantalla inicial de FreireIA",
+          gallery_alt_2: "Flujo de escucha en FreireIA",
+          gallery_alt_3: "Actividad generada en FreireIA",
+          gallery_alt_4: "Pantalla de resultado de sesión en FreireIA",
+          gallery_alt_5: "Memoria del Círculo de Cultura",
+          gallery_alt_6: "Pantalla de feedback en FreireIA",
+          gallery_caption_1: "Pantalla inicial y encuadre del papel del educador.",
+          gallery_caption_2: "Flujo de escucha con notas del educador y temas.",
+          gallery_caption_3: "Actividad generada y apoyo al siguiente paso.",
+          gallery_caption_4: "Registro de resultado de la sesión de alfabetización.",
+          gallery_caption_5: "Memoria del Círculo de Cultura.",
+          gallery_caption_6: "Captura de feedback para validación por invitación.",
+          impact_title: "Postura de impacto",
+          impact_lead: "FreireIA no sustituye al educador. Ayuda a organizar la escucha, preservar el contexto del estudiante y reducir la distancia entre conversación y práctica significativa de alfabetización.",
+          impact_1: "<strong>Usuario específico</strong> Educadores y mentores en alfabetización de adultos, EJA, educación de migrantes y aprendizaje comunitario.",
+          impact_2: "<strong>Problema específico</strong> Convertir el habla y el contexto de vida del estudiante en actividades prácticas de alfabetización exige esfuerzo cognitivo y tiempo.",
+          impact_3: "<strong>Salvaguarda específica</strong> La demo usa consentimiento, datos mínimos y revisión del educador en lugar de decisiones pedagógicas automatizadas.",
+          footer_project: "FreireIA - Compañera de Alfabetización",
+          footer_license: "Licencia MIT",
+        },
+      };
+
+      function normalizeLanguage(value) {
+        const language = (value || "").toLowerCase().split("-")[0];
+        return ["pt", "en", "es"].includes(language) ? language : null;
+      }
+
+      function detectLanguage() {
+        const saved = normalizeLanguage(localStorage.getItem("freireia_language"));
+        if (saved) return saved;
+
+        const browserLanguages = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+        for (const language of browserLanguages) {
+          const normalized = normalizeLanguage(language);
+          if (normalized) return normalized;
+        }
+        return "en";
+      }
+
+      function applyLanguage(language) {
+        const selected = translations[language] ? language : "en";
+        const dictionary = translations[selected];
+
+        document.documentElement.lang = selected === "pt" ? "pt-BR" : selected;
+        document.title = dictionary.title;
+        document.querySelector('meta[name="description"]').setAttribute("content", dictionary.description);
+
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          element.textContent = dictionary[element.dataset.i18n] || "";
+        });
+
+        document.querySelectorAll("[data-i18n-html]").forEach((element) => {
+          element.innerHTML = dictionary[element.dataset.i18nHtml] || "";
+        });
+
+        document.querySelectorAll("[data-i18n-alt]").forEach((element) => {
+          element.alt = dictionary[element.dataset.i18nAlt] || "";
+        });
+
+        document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+          element.setAttribute("aria-label", dictionary[element.dataset.i18nAriaLabel] || "");
+        });
+
+        document.querySelectorAll("[data-lang]").forEach((button) => {
+          button.setAttribute("aria-current", String(button.dataset.lang === selected));
+        });
+      }
+
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.addEventListener("click", () => {
+          localStorage.setItem("freireia_language", button.dataset.lang);
+          applyLanguage(button.dataset.lang);
+        });
+      });
+
+      applyLanguage(detectLanguage());
+    </script>
+  </body>
+</html>
