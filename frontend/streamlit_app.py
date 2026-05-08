@@ -19,12 +19,47 @@ LANGUAGES = {
     "English": "en",
 }
 
+DEFAULT_LANGUAGE = "en"
+
+
+def normalize_language(value):
+    language = (value or "").strip().lower()
+    if not language:
+        return DEFAULT_LANGUAGE
+
+    primary_language = language.split(",", 1)[0].split(";", 1)[0].split("-", 1)[0].split("_", 1)[0]
+    if primary_language in {"pt", "es", "en"}:
+        return primary_language
+    return DEFAULT_LANGUAGE
+
+
+def detect_user_language():
+    context = getattr(st, "context", None)
+    if context is None:
+        return DEFAULT_LANGUAGE
+
+    locale = getattr(context, "locale", None)
+    if locale:
+        return normalize_language(locale)
+
+    headers = getattr(context, "headers", {}) or {}
+    accept_language = headers.get("accept-language") or headers.get("Accept-Language")
+    return normalize_language(accept_language)
+
+
+def language_index(language_code):
+    codes = list(LANGUAGES.values())
+    try:
+        return codes.index(language_code)
+    except ValueError:
+        return codes.index(DEFAULT_LANGUAGE)
+
+
 TEXT = {
     "pt": {
         "caption": "Apoio para transformar uma conversa real em atividade de alfabetização crítica.",
         "role": "A FreireIA não substitui o educador. Ela ajuda a escutar o aluno, organizar o que apareceu na conversa e sugerir uma palavra para criar uma atividade de alfabetização.",
-        "before": "Antes de começar",
-        "api_key": "Chave da API",
+        "api_missing": "Configure GEMINI_API_KEY em .streamlit/secrets.toml ou no arquivo .env para iniciar a demo.",
         "language": "Idioma da atividade",
         "how_to": "Como usar com o educador",
         "how_steps": ["Converse com o aluno", "Registre o que apareceu", "Escolha uma palavra", "Aplique a atividade"],
@@ -139,8 +174,7 @@ Preste atenção em palavras repetidas, temas que aparecem com emoção, gestos,
     "es": {
         "caption": "Apoyo para transformar una conversación real en una actividad de alfabetización crítica.",
         "role": "FreireIA no sustituye al educador. Ayuda a escuchar al estudiante, organizar lo que apareció en la conversación y sugerir una palabra para crear una actividad de alfabetización.",
-        "before": "Antes de empezar",
-        "api_key": "Clave de API",
+        "api_missing": "Configura GEMINI_API_KEY en .streamlit/secrets.toml o en el archivo .env para iniciar la demo.",
         "language": "Idioma de la actividad",
         "how_to": "Cómo usar con el educador",
         "how_steps": ["Converse con el estudiante", "Registre lo que apareció", "Elija una palabra", "Aplique la actividad"],
@@ -255,8 +289,7 @@ Preste atención a palabras repetidas, temas que aparecen con emoción, gestos, 
     "en": {
         "caption": "Support for turning a real conversation into a critical literacy activity.",
         "role": "FreireIA does not replace the educator. It helps listen to the learner, organize what emerged in the conversation, and suggest a word to create a literacy activity.",
-        "before": "Before You Start",
-        "api_key": "API Key",
+        "api_missing": "Configure GEMINI_API_KEY in .streamlit/secrets.toml or the .env file to start the demo.",
         "language": "Activity Language",
         "how_to": "How to Use With the Educator",
         "how_steps": ["Talk with the learner", "Record what emerged", "Choose a word", "Apply the activity"],
@@ -752,13 +785,16 @@ sync_config_to_env()
 initialize_usage_state()
 
 with st.sidebar:
-    selected_language = st.selectbox("Idioma / Language / Idioma", list(LANGUAGES.keys()))
+    detected_language = detect_user_language()
+    selected_language = st.selectbox(
+        "Idioma / Language / Idioma",
+        list(LANGUAGES.keys()),
+        index=language_index(detected_language),
+    )
     idioma = LANGUAGES[selected_language]
     t = TEXT[idioma]
+    api_key = config_value("GEMINI_API_KEY", "").strip()
 
-    st.header(t["before"])
-    env_api_key = config_value("GEMINI_API_KEY", "")
-    api_key = st.text_input(t["api_key"], value=env_api_key, type="password").strip()
     st.divider()
     st.markdown(f"**{t['how_to']}**")
     for idx, step in enumerate(t["how_steps"], start=1):
@@ -773,7 +809,7 @@ st.info(t["role"])
 render_consent_gate(t)
 
 if not api_key:
-    st.info("Informe a chave da API na barra lateral para iniciar a demo.")
+    st.info(t["api_missing"])
     st.stop()
 
 try:

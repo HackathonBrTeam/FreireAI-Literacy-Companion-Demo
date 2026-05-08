@@ -21,13 +21,20 @@ The demo is configured to use Gemma 4 through Google AI Studio. Gemini can remai
 
 ```text
 .
+|-- index.html               # GitHub Pages landing page
 |-- main.py                  # Core FreireIA logic and model call
 |-- frontend/
 |   `-- streamlit_app.py     # Streamlit demo interface
+|-- media/                   # Demo screenshots for the landing page and submission
+|-- .streamlit/
+|   `-- secrets.toml.example # Streamlit Cloud secrets template
 |-- specs/
 |   `-- specification.md     # Product and agent requirements
 |-- docs/
-|   `-- Documentation.pdf    # Supporting documentation
+|   |-- Documentation.pdf    # Supporting documentation
+|   |-- kaggle_submission_checklist.md
+|   `-- test_plan.md         # Educator validation script
+|-- LICENSE
 |-- requirements.txt
 |-- .env.example
 `-- README.md
@@ -50,6 +57,8 @@ GEMINI_MAX_OUTPUT_TOKENS=700
 GEMINI_BUDGET_BRL=10.00
 GEMINI_INPUT_BRL_PER_1M_TOKENS=0.40
 GEMINI_OUTPUT_BRL_PER_1M_TOKENS=1.75
+FREIREIA_REQUIRE_CONSENT=true
+FEEDBACK_FORM_URL=https://example.com/your-feedback-form
 ```
 
 The `.env` file is intentionally ignored by Git. Do not commit API keys.
@@ -69,6 +78,11 @@ Open:
 ```text
 http://localhost:8501
 ```
+
+Published demo assets:
+
+- Live app: https://freireai-literacy-companion-demo.streamlit.app/
+- Demo repository: https://github.com/HackathonBrTeam/FreireAI-Literacy-Companion-Demo
 
 ## Invite-Based Validation
 
@@ -91,6 +105,12 @@ Suggested external feedback questions:
 - At what moment did the interface feel confusing?
 - Would this support a real literacy session?
 - What should change before testing with real learners?
+
+## Kaggle Submission Assets
+
+Before submitting, use `docs/kaggle_submission_checklist.md` to prepare the Kaggle writeup, video pitch, public repository, live demo URL, and media gallery. The submission story should make three things immediately clear: the concrete literacy problem, how Gemma 4 powers the end-to-end workflow, and why the educator remains in control.
+
+The repository also includes a static GitHub Pages landing page at `index.html`. It supports PT-BR, EN, and ES, detects the visitor's browser language automatically, and falls back to EN when the language is not supported. To publish it, enable GitHub Pages for the repository branch and select the repository root as the source.
 
 ## Version Plan
 
@@ -117,6 +137,9 @@ Planned characteristics:
 ### Version 1 - Pilot With Educators
 
 Purpose: test the tool with real educators, NGOs, EJA programs, and community learning groups.
+
+The pilot version is being developed in a separate repository:
+https://github.com/HackathonBrTeam/FreireAI-Literacy-Companion-Pilot
 
 Planned characteristics:
 
